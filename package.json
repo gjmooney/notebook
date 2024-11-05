@@ -63,5 +63,8 @@
     "rimraf": "^3.0.2",
     "typescript": "~5.0.2"
   },
-  "nx": {}
+  "nx": {},
+  "dependencies": {
+    "html-webpack-plugin": "^5.6.3"
+  }
 }
