@@ -421,5 +421,10 @@
       "react-dom",
       "yjs"
     ]
+  },
+  "jupyterlite": {
+    "apps": [
+      "tree"
+    ]
   }
 }
