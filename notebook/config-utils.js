@@ -83,33 +83,33 @@ const parser = new DOMParser();
  * - parent documents, and their `.jupyter-lite#/jupyter-config-data`
  * ...up to `jupyter-lite-root`.
  */
-// async function jupyterConfigData() {
-//   /**
-//    * Return the value if already cached for some reason
-//    */
-//   if (_JUPYTER_CONFIG !== null) {
-//     return _JUPYTER_CONFIG;
-//   }
+async function jupyterConfigData() {
+  /**
+   * Return the value if already cached for some reason
+   */
+  if (_JUPYTER_CONFIG !== null) {
+    return _JUPYTER_CONFIG;
+  }
 
-//   let parent = new URL(HERE).toString();
-//   let promises = [getPathConfig(HERE)];
-//   while (parent != FULL_LITE_ROOT) {
-//     parent = new URL('..', parent).toString();
-//     promises.unshift(getPathConfig(parent));
-//   }
+  let parent = new URL(HERE).toString();
+  let promises = [getPathConfig(HERE)];
+  while (parent != FULL_LITE_ROOT) {
+    parent = new URL('..', parent).toString();
+    promises.unshift(getPathConfig(parent));
+  }
 
-//   const configs = (await Promise.all(promises)).flat();
+  const configs = (await Promise.all(promises)).flat();
 
-//   let finalConfig = configs.reduce(mergeOneConfig);
+  let finalConfig = configs.reduce(mergeOneConfig);
 
-//   // apply any final patches
-//   finalConfig = dedupFederatedExtensions(finalConfig);
+  // apply any final patches
+  finalConfig = dedupFederatedExtensions(finalConfig);
 
-//   // hoist to cache
-//   _JUPYTER_CONFIG = finalConfig;
+  // hoist to cache
+  _JUPYTER_CONFIG = finalConfig;
 
-//   return finalConfig;
-// }
+  return finalConfig;
+}
 
 /**
  * Merge a new configuration on top of the existing config
@@ -154,13 +154,13 @@ function dedupFederatedExtensions(config) {
  * Load jupyter config data from (this) page and merge with
  * `jupyter-lite.json#jupyter-config-data`
  */
-// async function getPathConfig(url) {
-//   let promises = [getPageConfig(url)];
-//   for (const fileName of LITE_FILES) {
-//     promises.unshift(getLiteConfig(url, fileName));
-//   }
-//   return Promise.all(promises);
-// }
+async function getPathConfig(url) {
+  let promises = [getPageConfig(url)];
+  for (const fileName of LITE_FILES) {
+    promises.unshift(getLiteConfig(url, fileName));
+  }
+  return Promise.all(promises);
+}
 
 /**
  * The current normalized location
@@ -183,25 +183,25 @@ export async function getPageConfig(url = null) {
   return fixRelativeUrls(url, JSON.parse(script.textContent));
 }
 
-// /**
-//  * Fetch a jupyter-lite JSON or Notebook in this folder, which must contain the trailing slash.
-//  */
-// export async function getLiteConfig(url, fileName) {
-//   let text = '{}';
-//   let config = {};
-//   const liteUrl = `${url || HERE}${fileName}`;
-//   try {
-//     text = await (await window.fetch(liteUrl)).text();
-//     const json = JSON.parse(text);
-//     const liteConfig = fileName.endsWith('.ipynb')
-//       ? json['metadata']['jupyter-lite']
-//       : json;
-//     config = liteConfig[JUPYTER_CONFIG_ID] || {};
-//   } catch (err) {
-//     console.warn(`failed get ${JUPYTER_CONFIG_ID} from ${liteUrl}`);
-//   }
-//   return fixRelativeUrls(url, config);
-// }
+/**
+ * Fetch a jupyter-lite JSON or Notebook in this folder, which must contain the trailing slash.
+ */
+export async function getLiteConfig(url, fileName) {
+  let text = '{}';
+  let config = {};
+  const liteUrl = `${url || HERE}${fileName}`;
+  try {
+    text = await (await window.fetch(liteUrl)).text();
+    const json = JSON.parse(text);
+    const liteConfig = fileName.endsWith('.ipynb')
+      ? json['metadata']['jupyter-lite']
+      : json;
+    config = liteConfig[JUPYTER_CONFIG_ID] || {};
+  } catch (err) {
+    console.warn(`failed get ${JUPYTER_CONFIG_ID} from ${liteUrl}`);
+  }
+  return fixRelativeUrls(url, config);
+}
 
 export function fixRelativeUrls(url, config) {
   let urlBase = new URL(url || here()).pathname;
@@ -248,19 +248,18 @@ function addFavicon(config) {
  * The main entry point.
  */
 async function main() {
-  //   const config = await jupyterConfigData();
-  //   if (config.baseUrl === new URL(here()).pathname) {
-  //     window.location.href = config.appUrl.replace(/\/?$/, '/index.html');
-  //     return;
-  //   }
-  // rewrite the config
-  //   CONFIG_SCRIPT.textContent = JSON.stringify(config, null, 2);
-  //   addFavicon(config);
-  console.log('Two');
+  const config = await jupyterConfigData();
+  if (config.baseUrl === new URL(here()).pathname) {
+    window.location.href = config.appUrl.replace(/\/?$/, '/index.html');
+    return;
+  }
+  //   rewrite the config
+  CONFIG_SCRIPT.textContent = JSON.stringify(config, null, 2);
+  addFavicon(config);
+  console.log('one');
   const preloader = document.getElementById(LITE_MAIN);
   const bundle = document.createElement('script');
   bundle.type = 'text/javascript';
-
   bundle.src = preloader.href;
   bundle.main = preloader.attributes.main;
   document.head.appendChild(bundle);

@@ -21,6 +21,7 @@
 
     <link
       id="jupyter-lite-main"
+      type="text/javascript"
       rel="preload"
       href="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf('tree/bundle') !== -1)[0] %>"
       main="index"
@@ -29,20 +30,6 @@
 
     <script id="<%= htmlWebpackPlugin.files.js %>"></script>
 
-    <script>
-      (async function () {
-        const { pathname, origin, search, hash } = window.location;
-        if (pathname.match(/(index.html|\/?)$/) == null) {
-          window.location.href = `${origin}${pathname}/${search}${hash}`;
-          return;
-        }
-        await import(
-          '../config-utils.js?<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf("tree/bundle") !== -1)[0].split("?")[1] %>'
-        );
-      }).call(this);
-    </script>
-  </head>
-  <body class="jp-ThemedContainer">
     {# Copy so we do not modify the page_config with updates. #} {% set
     page_config_full = page_config.copy() %} {# Set a dummy variable - we just
     want the side effect of the update. #} {% set _ =
@@ -64,5 +51,22 @@
         }
       })();
     </script>
-  </body>
+
+    <script>
+      (async function () {
+        const { pathname, origin, search, hash } = window.location;
+        if (pathname.match(/(index.html|\/?)$/) == null) {
+          window.location.href = `${origin}${pathname}/${search}${hash}`;
+          console.log(`${origin}${pathname}/${search}${hash}`);
+          return;
+        } else {
+          console.log('test');
+        }
+        await import(
+          '../config-utils.js?<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf("tree/bundle") !== -1)[0].split("?")[1] %>'
+        );
+      }).call(this);
+    </script>
+  </head>
+  <body class="jp-ThemedContainer"></body>
 </html>

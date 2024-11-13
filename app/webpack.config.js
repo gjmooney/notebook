@@ -19,18 +19,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('@jupyterlab/builder/lib/webpack.config.base');
 
 const topLevelData = require('./package.json');
-const liteAppData = topLevelData.jupyterlite.apps.reduce(
+// notebookAppData is an object where each key is an app name and the vale are the contents of its package.json
+const notebookAppData = topLevelData.jupyterlite.apps.reduce(
   (memo, app) => ({ ...memo, [app]: require(`./${app}/package.json`) }),
   {}
 );
-
-// liteAppData is an object where each key is an app name and the vale are the contents of its package.json
-// console.log('liteAppData', liteAppData);
-
-// const names = Object.keys(topLevelData.dependencies).filter((name) => {
-//   const packageData = require(path.join(name, 'package.json'));
-//   return packageData.jupyterlab !== undefined;
-// });
 
 // Ensure a clear build directory.
 const buildDir = path.resolve(__dirname, 'build');
@@ -177,7 +170,7 @@ const allAssetConfig = [];
 const allEntryPoints = {};
 const allHtmlPlugins = [];
 
-for (const [name, data] of Object.entries(liteAppData)) {
+for (const [name, data] of Object.entries(notebookAppData)) {
   const buildDir = path.join(name, 'build');
 
   const packageNames = data.jupyterlab.extensions;
@@ -280,63 +273,6 @@ for (const [name, data] of Object.entries(liteAppData)) {
 //   });
 // });
 
-// Create the entry point and other assets in build directory.
-// const source = fs.readFileSync('index.template.js').toString();
-// const extData = {
-//   notebook_plugins: plugins,
-//   notebook_mime_extensions: mimeExtensions,
-// };
-// const indexOut = template(extData);
-// const template = Handlebars.compile(
-//   fs.readFileSync('index.template.js').toString()
-// );
-// fs.writeFileSync(
-//   path.join(buildDir, 'index.js'),
-//   template({
-//     notebook_plugins: plugins,
-//     notebook_mime_extensions: mimeExtensions,
-//   })
-// );
-
-// const extras = Build.ensureAssets({
-//   packageNames: names,
-//   output: buildDir,
-//   schemaOutput: path.resolve(__dirname, '..', 'notebook'),
-// });
-
-// Make a bootstrap entrypoint
-// const entryPoint = path.join(buildDir, 'bootstrap.js');
-// const bootstrap = 'import("./index.js");';
-// fs.writeFileSync(entryPoint, bootstrap);
-
-// if (process.env.NODE_ENV === 'production') {
-//   baseConfig.mode = 'production';
-// }
-
-// if (process.argv.includes('--analyze')) {
-//   extras.push(new BundleAnalyzerPlugin());
-// }
-
-// const htmlPlugins = [];
-// ['consoles', 'edit', 'error', 'notebooks', 'terminals', 'tree'].forEach(
-//   (name) => {
-//     htmlPlugins.push(
-//       new HtmlWebpackPlugin({
-//         chunksSortMode: 'none',
-//         template: path.join(
-//           path.resolve('./templates'),
-//           `${name}_template.html`
-//         ),
-//         title: name,
-//         filename: path.join(
-//           path.resolve(__dirname, '..', 'notebook/templates'),
-//           `${name}.html`
-//         ),
-//       })
-//     );
-//   }
-// );
-
 module.exports = [
   merge(baseConfig, {
     mode: 'development',
@@ -344,7 +280,7 @@ module.exports = [
     entry: allEntryPoints,
     output: {
       path: path.resolve(__dirname, '..', 'notebook/static/'),
-      // publicPath: '{{page_config.fullStaticUrl}}/',
+      publicPath: '{{page_config.fullStaticUrl}}/',
       library: {
         type: 'var',
         name: ['_JUPYTERLAB', 'CORE_OUTPUT'],
@@ -405,7 +341,7 @@ module.exports = [
           name: ['_JUPYTERLAB', 'CORE_LIBRARY_FEDERATION'],
         },
         name: 'CORE_FEDERATION',
-        shared: Object.values(liteAppData).reduce(
+        shared: Object.values(notebookAppData).reduce(
           (memo, data) => createShared(data, memo),
           {}
         ),
