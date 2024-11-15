@@ -18,12 +18,12 @@ const WPPlugin = require('@jupyterlab/builder').WPPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('@jupyterlab/builder/lib/webpack.config.base');
 
-const topLevelData = require('./package.json');
-// notebookAppData is an object where each key is an app name and the vale are the contents of its package.json
-const notebookAppData = topLevelData.jupyternotebook.apps.reduce(
-  (memo, app) => ({ ...memo, [app]: require(`./${app}/package.json`) }),
-  {}
-);
+const data = require('../package.json');
+
+const names = Object.keys(data.dependencies).filter((name) => {
+  const packageData = require(path.join(name, 'package.json'));
+  return packageData.jupyterlab !== undefined;
+});
 
 // Ensure a clear build directory.
 const buildDir = path.resolve(__dirname, 'build');
@@ -31,6 +31,18 @@ if (fs.existsSync(buildDir)) {
   fs.removeSync(buildDir);
 }
 fs.ensureDirSync(buildDir);
+
+// Handle the extensions.
+const { mimeExtensions, plugins } = data.jupyterlab;
+
+// Create the list of extension packages from the package.json metadata
+const extensionPackages = new Set();
+Object.keys(plugins).forEach((page) => {
+  const pagePlugins = plugins[page];
+  Object.keys(pagePlugins).forEach((name) => {
+    extensionPackages.add(name);
+  });
+});
 
 Handlebars.registerHelper('json', (context) => {
   return JSON.stringify(context);
@@ -62,14 +74,37 @@ Handlebars.registerHelper('list_plugins', () => {
   return str;
 });
 
+// Create the entry point and other assets in build directory.
+const source = fs.readFileSync('index.template.js').toString();
+const template = Handlebars.compile(source);
+const extData = {
+  notebook_plugins: plugins,
+  notebook_mime_extensions: mimeExtensions,
+};
+const indexOut = template(extData);
+fs.writeFileSync(path.join(buildDir, 'index.js'), indexOut);
+
+// Make a bootstrap entrypoint
+const entryPoint = path.join(buildDir, 'bootstrap.js');
+const bootstrap = 'import("./index.js");';
+fs.writeFileSync(entryPoint, bootstrap);
+
+// Copy extra files
+const cssImports = path.resolve(__dirname, 'style.js');
+fs.copySync(cssImports, path.resolve(buildDir, 'extraStyle.js'));
+
+const extras = Build.ensureAssets({
+  packageNames: names,
+  output: buildDir,
+  schemaOutput: path.resolve(__dirname, '..', 'notebook'),
+});
+
 /**
  * Create the webpack ``shared`` configuration
  */
-function createShared(packageData, shared = null) {
+function createShared(packageData) {
   // Set up module federation sharing config
-  shared = shared || {};
-
-  const extensionPackages = packageData.jupyterlab.extensions;
+  const shared = {};
 
   // Make sure any resolutions are shared
   for (let [pkg, requiredVersion] of Object.entries(packageData.resolutions)) {
@@ -160,101 +195,46 @@ function createShared(packageData, shared = null) {
     }
   }
 
-  // console.log('shared', shared);
-
   return shared;
 }
 
-// app/build
-const topLevelBuild = path.resolve('build');
+// Make a bootstrap entrypoint
+const entryPoint = path.join(buildDir, 'bootstrap.js');
+const bootstrap = 'import("./index.js");';
+fs.writeFileSync(entryPoint, bootstrap);
 
-const allAssetConfig = [];
-const allEntryPoints = {};
-const allHtmlPlugins = [];
-
-for (const [name, data] of Object.entries(notebookAppData)) {
-  const buildDir = path.join(name, 'build');
-
-  const packageNames = data.jupyterlab.extensions;
-  // Generate webpack config to copy extension assets to the build directory,
-  // such as setting schema files, theme assets, etc.
-  const extensionAssetConfig = Build.ensureAssets({
-    packageNames,
-    output: buildDir,
-    schemaOutput: path.resolve(__dirname, '..', 'notebook'),
-    // themeOutput: topLevelBuild,
-  });
-
-  allAssetConfig.push(extensionAssetConfig);
-
-  // Create a list of application extensions and mime extensions from
-  // jlab.extensions
-  const extensions = {};
-  const mimeExtensions = {};
-  for (const key of packageNames) {
-    const {
-      jupyterlab: { extension, mimeExtension },
-    } = require(`${key}/package.json`);
-    if (extension !== undefined) {
-      extensions[key] = extension === true ? '' : extension;
-    }
-    if (mimeExtension !== undefined) {
-      mimeExtensions[key] = mimeExtension === true ? '' : mimeExtension;
-    }
-  }
-
-  // Retrieve app info from package.json
-  const { appClassName, appModuleName, disabledExtensions } = data.jupyterlab;
-
-  // Create the entry point and other assets in build directory.
-  const template = Handlebars.compile(
-    fs.readFileSync(path.resolve('./index.template.js')).toString()
-  );
-  fs.writeFileSync(
-    path.join(name, 'build', 'index.js'),
-    template({
-      name,
-      appClassName,
-      appModuleName,
-      extensions,
-      mimeExtensions,
-      disabledExtensions,
-    })
-  );
-
-  // Create the bootstrap file that loads federated extensions and calls the
-  // initialization logic in index.js
-  const entryPoint = `./${name}/build/bootstrap.js`;
-  fs.copySync('bootstrap.js', entryPoint);
-  // Copy the publicpath file
-  const publicPath = `./${name}/build/publicpath.js`;
-  fs.copySync('publicpath.js', publicPath);
-  allEntryPoints[`${name}/bundle`] = entryPoint;
-  allEntryPoints[`${name}/publicpath`] = publicPath;
-
-  // Copy extra files
-  const cssImports = path.resolve(__dirname, 'style.js');
-  fs.copySync(cssImports, path.resolve(buildDir, 'extraStyle.js'));
-
-  allHtmlPlugins.push(
-    new HtmlWebpackPlugin({
-      // inject: false,
-      minify: false,
-      title: data.jupyterlab.title,
-      filename: path.join(
-        path.resolve(__dirname, '..', 'notebook/templates'),
-        `${name}.html`
-      ),
-      template: path.join(path.resolve('./templates'), `${name}_template.html`),
-    })
-  );
+if (process.env.NODE_ENV === 'production') {
+  baseConfig.mode = 'production';
 }
+
+if (process.argv.includes('--analyze')) {
+  extras.push(new BundleAnalyzerPlugin());
+}
+
+const htmlPlugins = [];
+['consoles', 'edit', 'error', 'notebooks', 'terminals', 'tree'].forEach(
+  (name) => {
+    htmlPlugins.push(
+      new HtmlWebpackPlugin({
+        chunksSortMode: 'none',
+        template: path.join(
+          path.resolve('./templates'),
+          `${name}_template.html`
+        ),
+        title: name,
+        filename: path.join(
+          path.resolve(__dirname, '..', 'notebook/templates'),
+          `${name}.html`
+        ),
+      })
+    );
+  }
+);
 
 module.exports = [
   merge(baseConfig, {
     mode: 'development',
-    devtool: 'source-map',
-    entry: allEntryPoints,
+    entry: ['./publicpath.js', './' + path.relative(__dirname, entryPoint)],
     output: {
       path: path.resolve(__dirname, '..', 'notebook/static/'),
       publicPath: '{{page_config.fullStaticUrl}}/',
@@ -262,50 +242,15 @@ module.exports = [
         type: 'var',
         name: ['_JUPYTERLAB', 'CORE_OUTPUT'],
       },
-      filename: '[name].js?_=[contenthash:7]',
-      chunkFilename: '[name].[contenthash:7].js',
-      // to generate valid wheel names
-      assetModuleFilename: '[name][ext][query]',
-    },
-    cache: {
-      type: 'filesystem',
-      cacheDirectory: path.resolve(__dirname, '../build/webpack'),
-      buildDependencies: {
-        config: [__filename],
-      },
-    },
-    module: {
-      rules: [
-        {
-          resourceQuery: /raw/,
-          type: 'asset/source',
-        },
-        // just keep the woff2 fonts from fontawesome
-        {
-          test: /fontawesome-free.*\.(svg|eot|ttf|woff)$/,
-          exclude: /fontawesome-free.*\.woff2$/,
-        },
-        {
-          test: /\.(jpe?g|png|gif|ico|eot|ttf|map|woff2?)(\?v=\d+\.\d+\.\d+)?$/i,
-          type: 'asset/resource',
-        },
-        {
-          resourceQuery: /text/,
-          type: 'asset/resource',
-          generator: {
-            filename: '[name][ext]',
-          },
-        },
-      ],
+      filename: '[name].[contenthash].js',
     },
     optimization: {
-      moduleIds: 'deterministic',
       splitChunks: {
         chunks: 'all',
         cacheGroups: {
           jlab_core: {
             test: /[\\/]node_modules[\\/]@(jupyterlab|jupyter-notebook|lumino(?!\/datagrid))[\\/]/,
-            name: 'jlab_core',
+            name: 'notebook_core',
           },
         },
       },
@@ -314,7 +259,7 @@ module.exports = [
       fallback: { util: false },
     },
     plugins: [
-      ...allHtmlPlugins,
+      ...htmlPlugins,
       new WPPlugin.JSONLicenseWebpackPlugin({
         excludedPackageTest: (packageName) =>
           packageName === '@jupyter-notebook/app',
@@ -325,14 +270,11 @@ module.exports = [
           name: ['_JUPYTERLAB', 'CORE_LIBRARY_FEDERATION'],
         },
         name: 'CORE_FEDERATION',
-        shared: Object.values(notebookAppData).reduce(
-          (memo, data) => createShared(data, memo),
-          {}
-        ),
+        shared: createShared(data),
       }),
     ],
   }),
-].concat(...allAssetConfig);
+].concat(extras);
 
 const logPath = path.join(buildDir, 'build_log.json');
 fs.writeFileSync(logPath, JSON.stringify(module.exports, null, '  '));

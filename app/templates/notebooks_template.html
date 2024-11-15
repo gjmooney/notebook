@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{page_config['appName'] | e}} - Notebook</title>
     {% block favicon %}
     <link
       rel="icon"
@@ -17,12 +17,9 @@
       type="text/css"
       href="{{ base_url | escape }}custom/custom.css"
     />
-    {% endif %}
-  </head>
-  <body class="jp-ThemedContainer" data-notebook="notebooks">
-    {# Copy so we do not modify the page_config with updates. #} {% set
-    page_config_full = page_config.copy() %} {# Set a dummy variable - we just
-    want the side effect of the update. #} {% set _ =
+    {% endif %} {# Copy so we do not modify the page_config with updates. #} {%
+    set page_config_full = page_config.copy() %} {# Set a dummy variable - we
+    just want the side effect of the update. #} {% set _ =
     page_config_full.update(baseUrl=base_url, wsUrl=ws_url) %} {# Sentinel value
     to say that we are on the tree page #} {% set _ =
     page_config_full.update(notebookPage='notebooks') %}
@@ -41,5 +38,6 @@
         }
       })();
     </script>
-  </body>
+  </head>
+  <body class="jp-ThemedContainer" data-notebook="notebooks"></body>
 </html>

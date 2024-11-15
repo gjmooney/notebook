@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Home</title>
     {% block favicon %}
     <link
       rel="icon"
@@ -18,14 +18,21 @@
       href="{{ base_url | escape }}custom/custom.css"
     />
     {% endif %}
-  </head>
-  <body class="jp-ThemedContainer">
+
+    <!-- <link
+      id="jupyter-lite-main"
+      rel="preload"
+      href="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf('tree/bundle') !== -1)[0] %>"
+      main="index"
+      as="script"
+    /> -->
+
     {# Copy so we do not modify the page_config with updates. #} {% set
     page_config_full = page_config.copy() %} {# Set a dummy variable - we just
     want the side effect of the update. #} {% set _ =
     page_config_full.update(baseUrl=base_url, wsUrl=ws_url) %} {# Sentinel value
     to say that we are on the tree page #} {% set _ =
-    page_config_full.update(notebookPage='tree') %}
+    page_config_full.update(notebookPage='notebooks') %}
 
     <script id="jupyter-config-data" type="application/json">
       {{ page_config_full | tojson }}
@@ -41,5 +48,20 @@
         }
       })();
     </script>
-  </body>
+
+    <!-- <script>
+      (async function () {
+        const { pathname, origin, search, hash } = window.location;
+        if (pathname.match(/(index.html|\/?)$/) == null) {
+          window.location.href = `${origin}${pathname}/${search}${hash}`;
+          console.log(`${origin}${pathname}/${search}${hash}`);
+          return;
+        } else {
+          console.log('test');
+        }
+        await import('./config-utils.js');
+      }).call(this);
+    </script> -->
+  </head>
+  <body class="jp-ThemedContainer"></body>
 </html>

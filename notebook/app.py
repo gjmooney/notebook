@@ -1,4 +1,5 @@
 """Jupyter notebook application."""
+
 from __future__ import annotations
 
 import os
@@ -143,6 +144,7 @@ class TreeHandler(NotebookBaseHandler):
         """
         path = path.strip("/")
         cm = self.contents_manager
+        # self.set_header("Content-Type", "text/javascript")
 
         if await ensure_async(cm.dir_exists(path=path)):
             if await ensure_async(cm.is_hidden(path)) and not cm.allow_hidden:
