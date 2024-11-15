@@ -178,6 +178,7 @@
     },
     "jupyterlab": {
       "title": "Jupyter Notebook - Tree",
+      "name": "tree",
       "appClassName": "NotebookApp",
       "appModuleName": "@jupyter-notebook/application",
       "extensions": [

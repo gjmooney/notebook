@@ -200,6 +200,7 @@
       },
     "jupyterlab": {
       "title": "Jupyter Notebook - Notebooks",
+      "name": "notebooks",
       "appClassName": "NotebookApp",
       "appModuleName": "@jupyter-notebook/application",
       "extensions": [

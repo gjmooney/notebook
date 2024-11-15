@@ -238,7 +238,7 @@ for (const [name, data] of Object.entries(notebookAppData)) {
 
   allHtmlPlugins.push(
     new HtmlWebpackPlugin({
-      // inject: false,
+      inject: false,
       minify: false,
       title: data.jupyterlab.title,
       filename: path.join(
@@ -246,6 +246,9 @@ for (const [name, data] of Object.entries(notebookAppData)) {
         `${name}.html`
       ),
       template: path.join(path.resolve('./templates'), `${name}_template.html`),
+      templateParameters: {
+        name: data.jupyterlab.name,
+      },
     })
   );
 }
