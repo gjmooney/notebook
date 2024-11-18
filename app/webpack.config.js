@@ -178,6 +178,7 @@ for (const [name, data] of Object.entries(notebookAppData)) {
   const packageNames = data.jupyterlab.extensions;
   // Generate webpack config to copy extension assets to the build directory,
   // such as setting schema files, theme assets, etc.
+  console.log('one');
   const extensionAssetConfig = Build.ensureAssets({
     packageNames,
     output: buildDir,
@@ -191,6 +192,7 @@ for (const [name, data] of Object.entries(notebookAppData)) {
   // jlab.extensions
   const extensions = {};
   const mimeExtensions = {};
+  console.log('two');
   for (const key of packageNames) {
     const {
       jupyterlab: { extension, mimeExtension },
