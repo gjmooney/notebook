@@ -48,8 +48,6 @@ export async function main() {
       PageConfig.getOption('federated_extensions')
       );
 
-  const tttt = PageConfig.getOption('fullLabextensionsUrl')
-  console.log('tttt', tttt)
   const federatedExtensionNames = new Set();
 
   extensions.forEach(data => {
@@ -164,7 +162,7 @@ export async function main() {
 
   const NotebookApp = require('@jupyter-notebook/application').NotebookApp;
   // ! which arguments go here?
-  const app = new NotebookApp({ mimeExtensions });
+  const app = new NotebookApp({ mimeExtensions, pluginsToRegister });
   app.name = PageConfig.getOption('appName') || 'JupyterLite';
 
   app.registerPluginModules(pluginsToRegister);

@@ -181,6 +181,8 @@
         "@jupyterlab/filebrowser-extension",
         "@jupyterlab/fileeditor-extension",
         "@jupyterlab/help-extension",
+        "@jupyterlab/htmlviewer-extension",
+        "@jupyterlab/hub-extension",
         "@jupyterlab/imageviewer-extension",
         "@jupyterlab/javascript-extension",
         "@jupyterlab/json-extension",
@@ -192,8 +194,10 @@
         "@jupyterlab/mermaid-extension",
         "@jupyterlab/metadataform-extension",
         "@jupyterlab/notebook-extension",
+        "@jupyterlab/pluginmanager-extension",
         "@jupyterlab/rendermime-extension",
         "@jupyterlab/shortcuts-extension",
+        "@jupyterlab/terminal-extension",
         "@jupyterlab/theme-dark-extension",
         "@jupyterlab/theme-dark-high-contrast-extension",
         "@jupyterlab/theme-light-extension",
@@ -203,9 +207,11 @@
         "@jupyterlab/ui-components-extension",
         "@jupyterlab/vega5-extension",
         "@jupyter-notebook/application-extension",
+        "@jupyter-notebook/console-extension",
         "@jupyter-notebook/docmanager-extension",
         "@jupyter-notebook/help-extension",
-        "@jupyter-notebook/notebook-extension"
+        "@jupyter-notebook/notebook-extension",
+        "@jupyter-notebook/terminal-extension"
       ],
       "singletonPackages": [
         "@codemirror/language",

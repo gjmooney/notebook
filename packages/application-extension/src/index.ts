@@ -328,22 +328,17 @@ const pages: JupyterFrontEndPlugin<void> = {
       label: trans.__('Open JupyterLab'),
       execute: () => {
         window.open(URLExt.join(baseUrl, 'lab'));
-        console.log('lab booty');
       },
     });
     const page = PageConfig.getOption('notebookPage');
-
-    console.log('booty');
 
     app.commands.addCommand(CommandIDs.openTree, {
       label: trans.__('File Browser'),
       execute: () => {
         if (page === 'tree') {
           app.commands.execute('filebrowser:activate');
-          console.log('tree botty');
         } else {
           window.open(URLExt.join(baseUrl, 'tree'));
-          console.log('tree else booty');
         }
       },
     });
@@ -411,7 +406,6 @@ const rendermime: JupyterFrontEndPlugin<IRenderMimeRegistry> = {
   ) => {
     const trans = (translator ?? nullTranslator).load('jupyterlab');
     const opener = notebookPathOpener ?? defaultNotebookPathOpener;
-    console.log('docManager', docManager);
     if (docManager) {
       app.commands.addCommand(CommandIDs.handleLink, {
         label: trans.__('Handle Local Link'),

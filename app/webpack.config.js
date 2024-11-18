@@ -231,7 +231,7 @@ for (const [name, data] of Object.entries(notebookAppData)) {
   fs.copySync('publicpath.js', publicPath);
   allEntryPoints[`${name}/bundle`] = entryPoint;
   allEntryPoints[`${name}/publicpath`] = publicPath;
-
+  console.log('first');
   // Copy extra files
   const cssImports = path.resolve(__dirname, 'style.js');
   fs.copySync(cssImports, path.resolve(buildDir, 'extraStyle.js'));
