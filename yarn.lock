@@ -3346,7 +3346,7 @@ __metadata:
 
 "@jupyterlab/filebrowser-extension@file:../../../jupyterlab/packages/filebrowser-extension::locator=%40jupyter-notebook%2Fapp%40workspace%3Aapp":
   version: 4.3.0-rc.0
-  resolution: "@jupyterlab/filebrowser-extension@file:../../../jupyterlab/packages/filebrowser-extension#../../../jupyterlab/packages/filebrowser-extension::hash=d391fb&locator=%40jupyter-notebook%2Fapp%40workspace%3Aapp"
+  resolution: "@jupyterlab/filebrowser-extension@file:../../../jupyterlab/packages/filebrowser-extension#../../../jupyterlab/packages/filebrowser-extension::hash=59306e&locator=%40jupyter-notebook%2Fapp%40workspace%3Aapp"
   dependencies:
     "@jupyterlab/application": ^4.3.0-rc.0
     "@jupyterlab/apputils": ^4.4.0-rc.0
@@ -3363,7 +3363,7 @@ __metadata:
     "@lumino/algorithm": ^2.0.2
     "@lumino/commands": ^2.3.1
     "@lumino/widgets": ^2.5.0
-  checksum: b476ceb141785123b7d11ec629697e2cf2a91ce840985a12f16ef5814e7f1c1ace852f1129fadc07f7a292539e506d41676b5b88436a7ff34326fc67fe51fb10
+  checksum: 69ef6387a4706f1dfcb9b4b698ed094cb9a5c4bbd7ef61832a0de126d295e33677189969050f5c358c4f294b8db2eaaf4b13b167c3b24aba1c6bfc7e7b2a9922
   languageName: node
   linkType: hard
 

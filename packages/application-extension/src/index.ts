@@ -375,6 +375,7 @@ const paths: JupyterFrontEndPlugin<JupyterFrontEnd.IPaths> = {
     if (!(app instanceof NotebookApp)) {
       throw new Error(`${paths.id} must be activated in Jupyter Notebook.`);
     }
+    console.log('app.paths', app.paths);
     return app.paths;
   },
 };
