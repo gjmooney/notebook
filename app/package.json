@@ -208,7 +208,8 @@
   "jupyternotebook": {
     "apps": [
       "tree",
-      "notebooks"
+      "notebooks",
+      "edit"
     ]
   }
 }
