@@ -209,7 +209,8 @@
     "apps": [
       "tree",
       "notebooks",
-      "edit"
+      "edit",
+      "consoles"
     ]
   }
 }
