@@ -17,16 +17,22 @@
       type="text/css"
       href="{{ base_url | escape }}custom/custom.css"
     />
-    {% endif %} {# Copy so we do not modify the page_config with updates. #} {%
-    set page_config_full = page_config.copy() %} {# Set a dummy variable - we
-    just want the side effect of the update. #} {% set _ =
+    {% endif %}
+  </head>
+  <body class="jp-ThemedContainer" data-notebook="notebooks">
+    <script id="gnar"></script>
+    {# Copy so we do not modify the page_config with updates. #} {% set
+    page_config_full = page_config.copy() %} {# Set a dummy variable - we just
+    want the side effect of the update. #} {% set _ =
     page_config_full.update(baseUrl=base_url, wsUrl=ws_url) %} {# Sentinel value
     to say that we are on the tree page #} {% set _ =
     page_config_full.update(notebookPage='notebooks') %}
+    <script id="gnar"></script>
 
     <script id="jupyter-config-data" type="application/json">
       {{ page_config_full | tojson }}
     </script>
+    <script id="gnar"></script>
 
     <script type="text/javascript">
       /* Remove token from URL. */
@@ -38,8 +44,12 @@
         }
       })();
     </script>
+    <script id="gnar"></script>
 
-    <script src="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf(`${name}/bundle`) !== -1)[0] %>"></script>
-  </head>
-  <body class="jp-ThemedContainer" data-notebook="notebooks"></body>
+    <script
+      defer
+      src="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf(`${name}/bundle`) !== -1)[0] %>"
+    ></script>
+    <script id="gnar"></script>
+  </body>
 </html>

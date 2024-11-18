@@ -178,4 +178,5 @@ export async function main() {
   }
 
   await app.start();
+  await app.restored;
 }

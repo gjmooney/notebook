@@ -177,6 +177,7 @@ const fileActions: JupyterFrontEndPlugin<void> = {
     // Create a toolbar item that adds buttons to the file browser toolbar
     // to perform actions on the files
     const { commands } = app;
+    console.log('commands', commands);
     const fileActions = new FilesActionButtons({
       commands,
       browser,

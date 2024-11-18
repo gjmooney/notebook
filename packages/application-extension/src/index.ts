@@ -246,12 +246,16 @@ const opener: JupyterFrontEndPlugin<void> = {
           }
 
           const factory = urlParams.get('factory') ?? defaultFactory;
+          console.log('file', file);
+          console.log('factory', factory);
           docManager.open(file, factory, undefined, {
             ref: '_noref',
           });
         });
       },
     });
+
+    console.log('idk');
 
     router.register({ command, pattern: TREE_PATTERN });
   },
@@ -324,17 +328,22 @@ const pages: JupyterFrontEndPlugin<void> = {
       label: trans.__('Open JupyterLab'),
       execute: () => {
         window.open(URLExt.join(baseUrl, 'lab'));
+        console.log('lab booty');
       },
     });
     const page = PageConfig.getOption('notebookPage');
+
+    console.log('booty');
 
     app.commands.addCommand(CommandIDs.openTree, {
       label: trans.__('File Browser'),
       execute: () => {
         if (page === 'tree') {
           app.commands.execute('filebrowser:activate');
+          console.log('tree botty');
         } else {
           window.open(URLExt.join(baseUrl, 'tree'));
+          console.log('tree else booty');
         }
       },
     });
@@ -402,11 +411,13 @@ const rendermime: JupyterFrontEndPlugin<IRenderMimeRegistry> = {
   ) => {
     const trans = (translator ?? nullTranslator).load('jupyterlab');
     const opener = notebookPathOpener ?? defaultNotebookPathOpener;
+    console.log('docManager', docManager);
     if (docManager) {
       app.commands.addCommand(CommandIDs.handleLink, {
         label: trans.__('Handle Local Link'),
         execute: (args) => {
           const path = args['path'] as string | undefined | null;
+          console.log('path', path);
           if (path === undefined || path === null) {
             return;
           }
@@ -414,6 +425,7 @@ const rendermime: JupyterFrontEndPlugin<IRenderMimeRegistry> = {
             .get(path, { content: false })
             .then((model) => {
               const baseUrl = PageConfig.getBaseUrl();
+              console.log('baseUrl', baseUrl);
               opener.open({
                 prefix: URLExt.join(baseUrl, 'tree'),
                 path: model.path,
