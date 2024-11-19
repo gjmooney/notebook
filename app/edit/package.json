@@ -204,6 +204,7 @@
             "@jupyterlab/help-extension",
             "@jupyterlab/htmlviewer-extension",
             "@jupyterlab/imageviewer-extension",
+            "@jupyterlab/json-extension",
             "@jupyterlab/lsp-extension",
             "@jupyterlab/mainmenu-extension",
             "@jupyterlab/markdownviewer-extension",

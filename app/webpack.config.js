@@ -165,9 +165,6 @@ function createShared(packageData, shared = null) {
   return shared;
 }
 
-// app/build
-const topLevelBuild = path.resolve('build');
-
 const allAssetConfig = [];
 const allEntryPoints = {};
 const allHtmlPlugins = [];
@@ -255,10 +252,33 @@ for (const [name, data] of Object.entries(notebookAppData)) {
   );
 }
 
+const plugins = [
+  ...allHtmlPlugins,
+  new WPPlugin.JSONLicenseWebpackPlugin({
+    excludedPackageTest: (packageName) =>
+      packageName === '@jupyter-notebook/app',
+  }),
+  new ModuleFederationPlugin({
+    library: {
+      type: 'var',
+      name: ['_JUPYTERLAB', 'CORE_LIBRARY_FEDERATION'],
+    },
+    name: 'CORE_FEDERATION',
+    shared: Object.values(notebookAppData).reduce(
+      (memo, data) => createShared(data, memo),
+      {}
+    ),
+  }),
+];
+
+if (process.argv.includes('--analyze')) {
+  plugins.push(new BundleAnalyzerPlugin());
+}
+
 module.exports = [
   merge(baseConfig, {
     mode: 'development',
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
     entry: allEntryPoints,
     output: {
       path: path.resolve(__dirname, '..', 'notebook/static/'),
@@ -267,8 +287,7 @@ module.exports = [
         type: 'var',
         name: ['_JUPYTERLAB', 'CORE_OUTPUT'],
       },
-      filename: '[name].js?_=[contenthash:7]',
-      chunkFilename: '[name].[contenthash:7].js',
+      filename: '[name].[contenthash].js',
       // to generate valid wheel names
       assetModuleFilename: '[name][ext][query]',
     },
@@ -278,30 +297,6 @@ module.exports = [
       buildDependencies: {
         config: [__filename],
       },
-    },
-    module: {
-      rules: [
-        {
-          resourceQuery: /raw/,
-          type: 'asset/source',
-        },
-        // just keep the woff2 fonts from fontawesome
-        {
-          test: /fontawesome-free.*\.(svg|eot|ttf|woff)$/,
-          exclude: /fontawesome-free.*\.woff2$/,
-        },
-        {
-          test: /\.(jpe?g|png|gif|ico|eot|ttf|map|woff2?)(\?v=\d+\.\d+\.\d+)?$/i,
-          type: 'asset/resource',
-        },
-        {
-          resourceQuery: /text/,
-          type: 'asset/resource',
-          generator: {
-            filename: '[name][ext]',
-          },
-        },
-      ],
     },
     optimization: {
       moduleIds: 'deterministic',
@@ -318,24 +313,7 @@ module.exports = [
     resolve: {
       fallback: { util: false },
     },
-    plugins: [
-      ...allHtmlPlugins,
-      new WPPlugin.JSONLicenseWebpackPlugin({
-        excludedPackageTest: (packageName) =>
-          packageName === '@jupyter-notebook/app',
-      }),
-      new ModuleFederationPlugin({
-        library: {
-          type: 'var',
-          name: ['_JUPYTERLAB', 'CORE_LIBRARY_FEDERATION'],
-        },
-        name: 'CORE_FEDERATION',
-        shared: Object.values(notebookAppData).reduce(
-          (memo, data) => createShared(data, memo),
-          {}
-        ),
-      }),
-    ],
+    plugins,
   }),
 ].concat(...allAssetConfig);
 

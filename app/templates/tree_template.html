@@ -42,9 +42,12 @@
       })();
     </script>
 
+    <script id="'<%= htmlWebpackPlugin.files.js %>"></script>
+
     {% block bundle %}
     <script
       defer
+      type="text/javascript"
       src="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf(`${name}/bundle`) !== -1)[0] %>"
     ></script>
     {% endblock %}
