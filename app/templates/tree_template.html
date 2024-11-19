@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title>Home</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {% block favicon %}
@@ -42,9 +42,12 @@
       })();
     </script>
 
+    <script id="'<%= htmlWebpackPlugin.files.js %>"></script>
+
     {% block bundle %}
     <script
       defer
+      type="text/javascript"
       src="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf(`${name}/bundle`) !== -1)[0] %>"
     ></script>
     {% endblock %}

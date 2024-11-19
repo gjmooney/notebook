@@ -209,7 +209,6 @@
             "@jupyterlab/markedparser-extension",
             "@jupyterlab/mathjax-extension",
             "@jupyterlab/mermaid-extension",
-            "@jupyterlab/metadataform-extension",
             "@jupyterlab/notebook-extension",
             "@jupyterlab/pluginmanager-extension",
             "@jupyterlab/shortcuts-extension",
@@ -217,6 +216,7 @@
             "@jupyterlab/theme-light-extension",
             "@jupyterlab/theme-dark-extension",
             "@jupyterlab/theme-dark-high-contrast-extension",
+            "@jupyterlab/tooltip-extension",
             "@jupyterlab/translation-extension",
             "@jupyterlab/ui-components-extension",
             "@jupyterlab/hub-extension"
@@ -292,7 +292,6 @@
             "@jupyterlab/application-extension:paths",
             "@jupyterlab/application-extension:property-inspector",
             "@jupyterlab/application-extension:logo",
-
             "@jupyterlab/apputils-extension:announcements",
             "@jupyterlab/apputils-extension:kernel-status",
             "@jupyterlab/apputils-extension:palette-restorer",
@@ -302,18 +301,14 @@
             "@jupyterlab/apputils-extension:splash",
             "@jupyterlab/apputils-extension:toggle-header",
             "@jupyterlab/apputils-extension:workspaces",
-
-           "@jupyterlab/console-extension:kernel-status",
-           "@jupyterlab/console-extension:cursor-position",
-
+            "@jupyterlab/console-extension:kernel-status",
+            "@jupyterlab/console-extension:cursor-position",
             "@jupyterlab/docmanager-extension:path-status",
             "@jupyterlab/docmanager-extension:saving-status",
             "@jupyterlab/docmanager-extension:open-browser-tab",
             "@jupyterlab/docmanager-extension:opener",
             "@jupyterlab/docmanager-extension:recents",
-
             "@jupyterlab/documentsearch-extension:labShellWidgetListener",
-
             "@jupyterlab/filebrowser-extension:browser",
             "@jupyterlab/filebrowser-extension:settings",
             "@jupyterlab/filebrowser-extension:share-file",
@@ -323,21 +318,17 @@
             "@jupyterlab/filebrowser-extension:open-with",
             "@jupyterlab/filebrowser-extension:open-browser-tab",
             "@jupyterlab/filebrowser-extension:open-url",
-
             "@jupyterlab/fileeditor-extension:cursor-position",
             "@jupyterlab/fileeditor-extension:completer",
             "@jupyterlab/fileeditor-extension:language-server",
             "@jupyterlab/fileeditor-extension:search",
             "@jupyterlab/fileeditor-extension:editor-syntax-status",
             "@jupyterlab/fileeditor-extension:tab-space-status",
-
             "@jupyterlab/help-extension:about",
             "@jupyterlab/help-extension:jupyter-forum",
             "@jupyterlab/help-extension:open",
             "@jupyterlab/help-extension:licenses",
-
             "@jupyterlab/mainmenu-extension:recents",
-
             "@jupyterlab/notebook-extension:execution-indicator",
             "@jupyterlab/notebook-extension:tools",
             "@jupyterlab/notebook-extension:mode-status",
@@ -354,8 +345,6 @@
             "@jupyterlab/notebook-extension:update-raw-mimetype",
             "@jupyterlab/notebook-extension:metadata-editor",
             "@jupyterlab/notebook-extension:active-cell-tool",
-
-
             "@jupyterlab/console-extension:kernel-status",
             "@jupyterlab/docmanager-extension:download",
             "@jupyterlab/docmanager-extension:path-status",
@@ -373,7 +362,9 @@
             "@jupyterlab/help-extension:about",
             "@jupyterlab/help-extension:open",
             "@jupyterlab/notebook-extension:execution-indicator",
-            "@jupyterlab/notebook-extension:kernel-status"
+            "@jupyterlab/notebook-extension:kernel-status",
+            "@jupyterlab/tooltip-extension:files",
+            "@jupyterlab/tooltip-extension:notebooks"
         ],
         "mimeExtensions": {
             "@jupyterlab/javascript-extension": "",
