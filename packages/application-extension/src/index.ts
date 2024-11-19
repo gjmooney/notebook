@@ -473,6 +473,7 @@ const shell: JupyterFrontEndPlugin<INotebookShell> = {
     }
     const notebookShell = app.shell;
 
+    console.log('notebookShell', notebookShell);
     if (settingRegistry) {
       settingRegistry
         .load(shell.id)
