@@ -33,7 +33,8 @@
       "tree",
       "notebooks",
       "edit",
-      "consoles"
+      "consoles",
+      "terminals"
     ]
   }
 }
