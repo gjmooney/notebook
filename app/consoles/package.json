@@ -1,6 +1,6 @@
 {
     "name": "@jupyter-notebook/app-consoles",
-    "version": "7.3.0-beta.1",
+    "version": "7.3.0-rc.0",
     "private": true,
     "resolutions": {
         "@codemirror/state": "~6.4.1",

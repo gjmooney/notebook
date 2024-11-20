@@ -10,10 +10,9 @@
     "watch": "webpack --config ./webpack.config.watch.js"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "../../../jupyterlab/builder",
+    "@jupyterlab/builder": "4.3.1",
     "css-loader": "~5.0.1",
     "extra-watch-webpack-plugin": "^1.0.3",
-    "fs-extra": "^8.1.0",
     "glob": "~7.1.6",
     "handlebars": "^4.7.7",
     "html-webpack-plugin": "^5.6.3",

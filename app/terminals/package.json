@@ -1,6 +1,6 @@
 {
     "name": "@jupyter-notebook/app-terminals",
-    "version": "7.3.0-beta.1",
+    "version": "7.3.0-rc.0",
     "private": true,
     "resolutions": {
         "@codemirror/state": "~6.4.1",
@@ -114,8 +114,8 @@
         "react": "~18.2.0",
         "react-dom": "~18.2.0",
         "yjs": "~13.6.8"
-      },
-      "dependencies": {
+    },
+    "dependencies": {
         "@jupyter-notebook/application": "^7.3.0-rc.0",
         "@jupyter-notebook/application-extension": "^7.3.0-rc.0",
         "@jupyter-notebook/console-extension": "^7.3.0-rc.0",
@@ -178,7 +178,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "yjs": "^13.5.40"
-      },
+    },
     "jupyterlab": {
         "title": "Jupyter Notebook - Consoles",
         "name": "terminals",
@@ -292,7 +292,6 @@
             "@jupyterlab/application-extension:paths",
             "@jupyterlab/application-extension:property-inspector",
             "@jupyterlab/application-extension:logo",
-
             "@jupyterlab/apputils-extension:announcements",
             "@jupyterlab/apputils-extension:kernel-status",
             "@jupyterlab/apputils-extension:palette-restorer",
@@ -302,18 +301,14 @@
             "@jupyterlab/apputils-extension:splash",
             "@jupyterlab/apputils-extension:toggle-header",
             "@jupyterlab/apputils-extension:workspaces",
-
-           "@jupyterlab/console-extension:kernel-status",
-           "@jupyterlab/console-extension:cursor-position",
-
+            "@jupyterlab/console-extension:kernel-status",
+            "@jupyterlab/console-extension:cursor-position",
             "@jupyterlab/docmanager-extension:path-status",
             "@jupyterlab/docmanager-extension:saving-status",
             "@jupyterlab/docmanager-extension:open-browser-tab",
             "@jupyterlab/docmanager-extension:opener",
             "@jupyterlab/docmanager-extension:recents",
-
             "@jupyterlab/documentsearch-extension:labShellWidgetListener",
-
             "@jupyterlab/filebrowser-extension:browser",
             "@jupyterlab/filebrowser-extension:settings",
             "@jupyterlab/filebrowser-extension:share-file",
@@ -323,21 +318,17 @@
             "@jupyterlab/filebrowser-extension:open-with",
             "@jupyterlab/filebrowser-extension:open-browser-tab",
             "@jupyterlab/filebrowser-extension:open-url",
-
             "@jupyterlab/fileeditor-extension:cursor-position",
             "@jupyterlab/fileeditor-extension:completer",
             "@jupyterlab/fileeditor-extension:language-server",
             "@jupyterlab/fileeditor-extension:search",
             "@jupyterlab/fileeditor-extension:editor-syntax-status",
             "@jupyterlab/fileeditor-extension:tab-space-status",
-
             "@jupyterlab/help-extension:about",
             "@jupyterlab/help-extension:jupyter-forum",
             "@jupyterlab/help-extension:open",
             "@jupyterlab/help-extension:licenses",
-
             "@jupyterlab/mainmenu-extension:recents",
-
             "@jupyterlab/notebook-extension:execution-indicator",
             "@jupyterlab/notebook-extension:tools",
             "@jupyterlab/notebook-extension:mode-status",
@@ -362,4 +353,4 @@
         },
         "linkedPackages": {}
     }
-  }
+}

@@ -2262,6 +2262,75 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@jupyter-notebook/app-terminals@workspace:app/terminals":
+  version: 0.0.0-use.local
+  resolution: "@jupyter-notebook/app-terminals@workspace:app/terminals"
+  dependencies:
+    "@jupyter-notebook/application": ^7.3.0-rc.0
+    "@jupyter-notebook/application-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/console-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/docmanager-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/documentsearch-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/help-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/notebook-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/terminal-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/tree": ^7.3.0-rc.0
+    "@jupyter-notebook/tree-extension": ^7.3.0-rc.0
+    "@jupyter-notebook/ui-components": ^7.3.0-rc.0
+    "@jupyterlab/application-extension": ~4.3.1
+    "@jupyterlab/apputils-extension": ~4.3.1
+    "@jupyterlab/attachments": ~4.3.1
+    "@jupyterlab/cell-toolbar-extension": ~4.3.1
+    "@jupyterlab/celltags-extension": ~4.3.1
+    "@jupyterlab/codemirror": ~4.3.1
+    "@jupyterlab/codemirror-extension": ~4.3.1
+    "@jupyterlab/completer-extension": ~4.3.1
+    "@jupyterlab/console-extension": ~4.3.1
+    "@jupyterlab/coreutils": ~6.3.1
+    "@jupyterlab/csvviewer-extension": ~4.3.1
+    "@jupyterlab/debugger-extension": ~4.3.1
+    "@jupyterlab/docmanager-extension": ~4.3.1
+    "@jupyterlab/documentsearch-extension": ~4.3.1
+    "@jupyterlab/extensionmanager-extension": ~4.3.1
+    "@jupyterlab/filebrowser-extension": ~4.3.1
+    "@jupyterlab/fileeditor-extension": ~4.3.1
+    "@jupyterlab/help-extension": ~4.3.1
+    "@jupyterlab/htmlviewer-extension": ~4.3.1
+    "@jupyterlab/hub-extension": ~4.3.1
+    "@jupyterlab/imageviewer-extension": ~4.3.1
+    "@jupyterlab/javascript-extension": ~4.3.1
+    "@jupyterlab/json-extension": ~4.3.1
+    "@jupyterlab/lsp": ~4.3.1
+    "@jupyterlab/lsp-extension": ~4.3.1
+    "@jupyterlab/mainmenu-extension": ~4.3.1
+    "@jupyterlab/markdownviewer-extension": ~4.3.1
+    "@jupyterlab/markedparser-extension": ~4.3.1
+    "@jupyterlab/mathjax-extension": ~4.3.1
+    "@jupyterlab/mermaid-extension": ~4.3.1
+    "@jupyterlab/metadataform-extension": ~4.3.1
+    "@jupyterlab/notebook-extension": ~4.3.1
+    "@jupyterlab/pdf-extension": ~4.3.1
+    "@jupyterlab/pluginmanager-extension": ~4.3.1
+    "@jupyterlab/rendermime-extension": ~4.3.1
+    "@jupyterlab/running-extension": ~4.3.1
+    "@jupyterlab/settingeditor": ~4.3.1
+    "@jupyterlab/settingeditor-extension": ~4.3.1
+    "@jupyterlab/shortcuts-extension": ~5.1.1
+    "@jupyterlab/terminal-extension": ~4.3.1
+    "@jupyterlab/theme-dark-extension": ~4.3.1
+    "@jupyterlab/theme-dark-high-contrast-extension": ~4.3.1
+    "@jupyterlab/theme-light-extension": ~4.3.1
+    "@jupyterlab/toc-extension": ~6.3.1
+    "@jupyterlab/tooltip-extension": ~4.3.1
+    "@jupyterlab/translation-extension": ~4.3.1
+    "@jupyterlab/ui-components-extension": ~4.3.1
+    "@jupyterlab/vega5-extension": ~4.3.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    yjs: ^13.5.40
+  languageName: unknown
+  linkType: soft
+
 "@jupyter-notebook/app-tree@workspace:app/tree":
   version: 0.0.0-use.local
   resolution: "@jupyter-notebook/app-tree@workspace:app/tree"
@@ -2335,10 +2404,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jupyter-notebook/app@workspace:app"
   dependencies:
-    "@jupyterlab/builder": ../../../jupyterlab/builder
+    "@jupyterlab/builder": 4.3.1
     css-loader: ~5.0.1
     extra-watch-webpack-plugin: ^1.0.3
-    fs-extra: ^8.1.0
     glob: ~7.1.6
     handlebars: ^4.7.7
     html-webpack-plugin: ^5.6.3
@@ -2664,7 +2732,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jupyter-notebook/root@workspace:."
   dependencies:
-    "@jupyterlab/buildutils": ~4.3.0
+    "@jupyterlab/buildutils": ~4.3.1
     "@types/rimraf": ^3.0.2
     "@typescript-eslint/eslint-plugin": ^5.55.0
     "@typescript-eslint/parser": ^5.55.0
@@ -2673,6 +2741,7 @@ __metadata:
     eslint-plugin-jest: ^27.2.1
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.32.2
+    fs-extra: ^8.1.0
     lerna: ^6.6.2
     npm-run-all: ^4.1.5
     prettier: ^2.8.5
@@ -3070,9 +3139,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jupyterlab/builder@file:../../../jupyterlab/builder::locator=%40jupyter-notebook%2Fapp%40workspace%3Aapp":
-  version: 4.3.0-rc.0
-  resolution: "@jupyterlab/builder@file:../../../jupyterlab/builder#../../../jupyterlab/builder::hash=7c74b2&locator=%40jupyter-notebook%2Fapp%40workspace%3Aapp"
+"@jupyterlab/builder@npm:4.3.1":
+  version: 4.3.1
+  resolution: "@jupyterlab/builder@npm:4.3.1"
   dependencies:
     "@lumino/algorithm": ^2.0.2
     "@lumino/application": ^2.4.1
@@ -3106,8 +3175,8 @@ __metadata:
     webpack-merge: ^5.8.0
     worker-loader: ^3.0.2
   bin:
-    build-labextension: ./lib/build-labextension.js
-  checksum: e23c573fdca3b9b80739d3f32be29f41142d1420af716f34c7046eb61f56035e25eb4bbc0dab1b1fe81053a56f702be2cd307ffdc4ea4306a099e34c34ccb436
+    build-labextension: lib/build-labextension.js
+  checksum: 8d2726e3e808732964facf9dcc6d0fcc01854c336d0b4f5ef5357ee78ef6941947b98bed78f94cdc9c8c14da4cda9f1057dddce46fd9db3ea0bbc0e6eb4f119c
   languageName: node
   linkType: hard
 
@@ -3182,6 +3251,39 @@ __metadata:
     update-dist-tag: lib/update-dist-tag.js
     update-staging-lock: lib/update-staging-lock.js
   checksum: a79233d10498dcf79cf30aff0d1d524918d84d8cc12e76191a9e2efb3146dc1ef2d3d82ea091fa0e807119575678abae76932b777ea557443d0e753bc7ece01e
+  languageName: node
+  linkType: hard
+
+"@jupyterlab/buildutils@npm:~4.3.1":
+  version: 4.3.1
+  resolution: "@jupyterlab/buildutils@npm:4.3.1"
+  dependencies:
+    "@yarnpkg/core": ^4.0.3
+    "@yarnpkg/parsers": ^3.0.0
+    commander: ^9.4.1
+    crypto: ~1.0.1
+    dependency-graph: ^0.11.0
+    fs-extra: ^10.1.0
+    glob: ~7.1.6
+    inquirer: ^9.1.4
+    micromatch: ^4.0.2
+    minimatch: ~3.0.4
+    os: ~0.1.1
+    package-json: ^7.0.0
+    prettier: ~2.6.0
+    process: ^0.11.10
+    semver: ^7.3.2
+    sort-package-json: ~1.53.1
+    typescript: ~5.1.6
+    verdaccio: ^5.25.0
+  bin:
+    get-dependency: lib/get-dependency.js
+    local-repository: lib/local-repository.js
+    remove-dependency: lib/remove-dependency.js
+    update-dependency: lib/update-dependency.js
+    update-dist-tag: lib/update-dist-tag.js
+    update-staging-lock: lib/update-staging-lock.js
+  checksum: c4504e2a040f7774597993b9ea83e821009d96a9b9b69d2cf41bc46a3a4bc8ee72cd67f022fec41d6fe5d5a421d6ced4e95df5f7ff4b2175effde21225de7cab
   languageName: node
   linkType: hard
 
