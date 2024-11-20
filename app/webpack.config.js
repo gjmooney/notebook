@@ -16,7 +16,6 @@ const BundleAnalyzerPlugin =
 const Build = require('@jupyterlab/builder').Build;
 const WPPlugin = require('@jupyterlab/builder').WPPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('@jupyterlab/builder/lib/webpack.config.base');
 
 const topLevelData = require('./package.json');
@@ -276,26 +275,6 @@ if (process.argv.includes('--analyze')) {
   plugins.push(new BundleAnalyzerPlugin());
 }
 
-const htmlPlugins = [];
-['consoles', 'edit', 'error', 'notebooks', 'terminals', 'tree'].forEach(
-  (name) => {
-    htmlPlugins.push(
-      new HtmlWebpackPlugin({
-        chunksSortMode: 'none',
-        template: path.join(
-          path.resolve('./templates'),
-          `${name}_template.html`
-        ),
-        title: name,
-        filename: path.join(
-          path.resolve(__dirname, '..', 'notebook/templates'),
-          `${name}.html`
-        ),
-      })
-    );
-  }
-);
-
 module.exports = [
   merge(baseConfig, {
     mode: 'development',
@@ -303,7 +282,6 @@ module.exports = [
     entry: allEntryPoints,
     output: {
       path: path.resolve(__dirname, '..', 'notebook/static/'),
-      publicPath: '{{page_config.fullStaticUrl}}/',
       publicPath: '{{page_config.fullStaticUrl}}/',
       library: {
         type: 'var',
@@ -319,6 +297,30 @@ module.exports = [
       buildDependencies: {
         config: [__filename],
       },
+    },
+    module: {
+      rules: [
+        {
+          resourceQuery: /raw/,
+          type: 'asset/source',
+        },
+        // just keep the woff2 fonts from fontawesome
+        {
+          test: /fontawesome-free.*\.(svg|eot|ttf|woff)$/,
+          exclude: /fontawesome-free.*\.woff2$/,
+        },
+        {
+          test: /\.(jpe?g|png|gif|ico|eot|ttf|map|woff2?)(\?v=\d+\.\d+\.\d+)?$/i,
+          type: 'asset/resource',
+        },
+        {
+          resourceQuery: /text/,
+          type: 'asset/resource',
+          generator: {
+            filename: '[name][ext]',
+          },
+        },
+      ],
     },
     optimization: {
       moduleIds: 'deterministic',
