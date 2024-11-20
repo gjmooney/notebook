@@ -207,6 +207,7 @@ const openTreeTab: JupyterFrontEndPlugin<void> = {
       execute: async () => {
         const url = URLExt.join(PageConfig.getBaseUrl(), 'tree');
         window.open(url);
+        console.log('why not');
       },
     });
   },
