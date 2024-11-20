@@ -2335,66 +2335,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jupyter-notebook/app@workspace:app"
   dependencies:
-    "@jupyter-notebook/application": ^7.3.0-rc.0
-    "@jupyter-notebook/application-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/console-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/docmanager-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/documentsearch-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/help-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/notebook-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/terminal-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/tree": ^7.3.0-rc.0
-    "@jupyter-notebook/tree-extension": ^7.3.0-rc.0
-    "@jupyter-notebook/ui-components": ^7.3.0-rc.0
-    "@jupyterlab/application-extension": ~4.3.1
-    "@jupyterlab/apputils-extension": ~4.3.1
-    "@jupyterlab/attachments": ~4.3.1
     "@jupyterlab/builder": ~4.3.1
-    "@jupyterlab/buildutils": ~4.3.1
-    "@jupyterlab/cell-toolbar-extension": ~4.3.1
-    "@jupyterlab/celltags-extension": ~4.3.1
-    "@jupyterlab/codemirror": ~4.3.1
-    "@jupyterlab/codemirror-extension": ~4.3.1
-    "@jupyterlab/completer-extension": ~4.3.1
-    "@jupyterlab/console-extension": ~4.3.1
-    "@jupyterlab/coreutils": ~6.3.1
-    "@jupyterlab/csvviewer-extension": ~4.3.1
-    "@jupyterlab/debugger-extension": ~4.3.1
-    "@jupyterlab/docmanager-extension": ~4.3.1
-    "@jupyterlab/documentsearch-extension": ~4.3.1
-    "@jupyterlab/extensionmanager-extension": ~4.3.1
-    "@jupyterlab/filebrowser-extension": ~4.3.1
-    "@jupyterlab/fileeditor-extension": ~4.3.1
-    "@jupyterlab/help-extension": ~4.3.1
-    "@jupyterlab/htmlviewer-extension": ~4.3.1
-    "@jupyterlab/hub-extension": ~4.3.1
-    "@jupyterlab/imageviewer-extension": ~4.3.1
-    "@jupyterlab/javascript-extension": ~4.3.1
-    "@jupyterlab/json-extension": ~4.3.1
-    "@jupyterlab/lsp": ~4.3.1
-    "@jupyterlab/lsp-extension": ~4.3.1
-    "@jupyterlab/mainmenu-extension": ~4.3.1
-    "@jupyterlab/markdownviewer-extension": ~4.3.1
-    "@jupyterlab/markedparser-extension": ~4.3.1
-    "@jupyterlab/mathjax-extension": ~4.3.1
-    "@jupyterlab/mermaid-extension": ~4.3.1
-    "@jupyterlab/metadataform-extension": ~4.3.1
-    "@jupyterlab/notebook-extension": ~4.3.1
-    "@jupyterlab/pdf-extension": ~4.3.1
-    "@jupyterlab/pluginmanager-extension": ~4.3.1
-    "@jupyterlab/running-extension": ~4.3.1
-    "@jupyterlab/settingeditor": ~4.3.1
-    "@jupyterlab/settingeditor-extension": ~4.3.1
-    "@jupyterlab/shortcuts-extension": ~5.1.1
-    "@jupyterlab/terminal-extension": ~4.3.1
-    "@jupyterlab/theme-dark-extension": ~4.3.1
-    "@jupyterlab/theme-dark-high-contrast-extension": ~4.3.1
-    "@jupyterlab/theme-light-extension": ~4.3.1
-    "@jupyterlab/toc-extension": ~6.3.1
-    "@jupyterlab/tooltip-extension": ~4.3.1
-    "@jupyterlab/translation-extension": ~4.3.1
-    "@jupyterlab/ui-components-extension": ~4.3.1
-    "@jupyterlab/vega5-extension": ~4.3.1
     "@types/rimraf": ^3.0.2
     css-loader: ~5.0.1
     extra-watch-webpack-plugin: ^1.0.3
@@ -2465,25 +2406,6 @@ __metadata:
     typescript: ~5.0.2
   languageName: unknown
   linkType: soft
-
-"@jupyter-notebook/application@npm:^7.3.0-rc.0":
-  version: 7.3.0-rc.0
-  resolution: "@jupyter-notebook/application@npm:7.3.0-rc.0"
-  dependencies:
-    "@jupyterlab/application": ~4.3.1
-    "@jupyterlab/coreutils": ~6.3.1
-    "@jupyterlab/docregistry": ~4.3.1
-    "@jupyterlab/rendermime-interfaces": ~3.11.1
-    "@jupyterlab/ui-components": ~4.3.1
-    "@lumino/algorithm": ^2.0.2
-    "@lumino/coreutils": ^2.2.0
-    "@lumino/messaging": ^2.0.2
-    "@lumino/polling": ^2.1.3
-    "@lumino/signaling": ^2.1.3
-    "@lumino/widgets": ^2.5.0
-  checksum: a381ca1ac602057fe8622a536e772a3953f8f35100285d0a26f4402111750c966e820d255a9e36ba181bc966d37e044e66f2fbe9043e56181d60a71bff55cc2f
-  languageName: node
-  linkType: hard
 
 "@jupyter-notebook/buildutils@workspace:buildutils":
   version: 0.0.0-use.local
@@ -2620,26 +2542,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@jupyter-notebook/notebook-extension@npm:^7.3.0-rc.0":
-  version: 7.3.0-rc.0
-  resolution: "@jupyter-notebook/notebook-extension@npm:7.3.0-rc.0"
-  dependencies:
-    "@jupyter-notebook/application": ^7.3.0-rc.0
-    "@jupyterlab/application": ~4.3.1
-    "@jupyterlab/apputils": ~4.4.1
-    "@jupyterlab/cells": ~4.3.1
-    "@jupyterlab/docmanager": ~4.3.1
-    "@jupyterlab/notebook": ~4.3.1
-    "@jupyterlab/settingregistry": ~4.3.1
-    "@jupyterlab/translation": ~4.3.1
-    "@lumino/polling": ^2.1.3
-    "@lumino/widgets": ^2.5.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-  checksum: c42e684528ce4500497b3138d80af23aab97c9dccbb92e2661a5a4247f69c1c7183011a193a9d397eeedf087480897eb3c3fcb907884733c3d36f5a52972ca2e
-  languageName: node
-  linkType: hard
-
 "@jupyter-notebook/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@jupyter-notebook/root@workspace:."
@@ -2743,17 +2645,6 @@ __metadata:
     typescript: ~5.0.2
   languageName: unknown
   linkType: soft
-
-"@jupyter-notebook/ui-components@npm:^7.3.0-rc.0":
-  version: 7.3.0-rc.0
-  resolution: "@jupyter-notebook/ui-components@npm:7.3.0-rc.0"
-  dependencies:
-    "@jupyterlab/ui-components": ~4.3.1
-    react: ^18.2.0
-    react-dom: ^18.2.0
-  checksum: 40b702482c8340cc92271fcc37466c92132275ae918d7259c16d8dd9389594de1e66376ea4695bedaba72a8cd5d00ee683be55d205c72313d44c00ba4de485b8
-  languageName: node
-  linkType: hard
 
 "@jupyter/react-components@npm:^0.16.6":
   version: 0.16.7
@@ -4220,6 +4111,19 @@ __metadata:
     "@lumino/widgets": ^2.5.0
     react: ^18.2.0
   checksum: 51cfbab9fd9b27c121f365f0e98ba2c317300ee35d6b29e615a3cd5d1fb24a17c7d00e6cdf2350d25d7ad7e364bf06f4e0dc3190248e0d567a9371f48e50eb27
+  languageName: node
+  linkType: hard
+
+"@jupyterlab/rendermime-extension@npm:~4.3.1":
+  version: 4.3.1
+  resolution: "@jupyterlab/rendermime-extension@npm:4.3.1"
+  dependencies:
+    "@jupyterlab/application": ^4.3.1
+    "@jupyterlab/apputils": ^4.4.1
+    "@jupyterlab/docmanager": ^4.3.1
+    "@jupyterlab/rendermime": ^4.3.1
+    "@jupyterlab/translation": ^4.3.1
+  checksum: 074a509cb18f5b1bc390191dffbc8e3c01b2c750e4fec374fbbb0c7e21349b5a7d6de7bc921881b7a17b8142c23faf41a3e5736e192ba37bd133ad3bb075675e
   languageName: node
   linkType: hard
 
