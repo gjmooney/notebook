@@ -246,12 +246,16 @@ const opener: JupyterFrontEndPlugin<void> = {
           }
 
           const factory = urlParams.get('factory') ?? defaultFactory;
+          console.log('file', file);
+          console.log('factory', factory);
           docManager.open(file, factory, undefined, {
             ref: '_noref',
           });
         });
       },
     });
+
+    console.log('idk');
 
     router.register({ command, pattern: TREE_PATTERN });
   },
@@ -371,6 +375,7 @@ const paths: JupyterFrontEndPlugin<JupyterFrontEnd.IPaths> = {
     if (!(app instanceof NotebookApp)) {
       throw new Error(`${paths.id} must be activated in Jupyter Notebook.`);
     }
+    console.log('app.paths', app.paths);
     return app.paths;
   },
 };
@@ -407,6 +412,7 @@ const rendermime: JupyterFrontEndPlugin<IRenderMimeRegistry> = {
         label: trans.__('Handle Local Link'),
         execute: (args) => {
           const path = args['path'] as string | undefined | null;
+          console.log('path', path);
           if (path === undefined || path === null) {
             return;
           }
@@ -414,6 +420,7 @@ const rendermime: JupyterFrontEndPlugin<IRenderMimeRegistry> = {
             .get(path, { content: false })
             .then((model) => {
               const baseUrl = PageConfig.getBaseUrl();
+              console.log('baseUrl', baseUrl);
               opener.open({
                 prefix: URLExt.join(baseUrl, 'tree'),
                 path: model.path,
@@ -466,6 +473,7 @@ const shell: JupyterFrontEndPlugin<INotebookShell> = {
     }
     const notebookShell = app.shell;
 
+    console.log('notebookShell', notebookShell);
     if (settingRegistry) {
       settingRegistry
         .load(shell.id)

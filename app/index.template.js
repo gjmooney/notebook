@@ -2,86 +2,67 @@
 // Distributed under the terms of the Modified BSD License.
 
 // Inspired by: https://github.com/jupyterlab/jupyterlab/blob/master/dev_mode/index.js
+import { {{ appClassName }} } from '{{ appModuleName }}';
 
-import { PageConfig, URLExt } from '@jupyterlab/coreutils';
+import { PageConfig } from '@jupyterlab/coreutils';
 
 require('./style.js');
 require('./extraStyle.js');
 
-function loadScript(url) {
-  return new Promise((resolve, reject) => {
-    const newScript = document.createElement('script');
-    newScript.onerror = reject;
-    newScript.onload = resolve;
-    newScript.async = true;
-    document.head.appendChild(newScript);
-    newScript.src = url;
-  });
-}
-async function loadComponent(url, scope) {
-  await loadScript(url);
-
-  // From MIT-licensed https://github.com/module-federation/module-federation-examples/blob/af043acd6be1718ee195b2511adf6011fba4233c/advanced-api/dynamic-remotes/app1/src/App.js#L6-L12
-  // eslint-disable-next-line no-undef
-  await __webpack_init_sharing__('default');
-  const container = window._JUPYTERLAB[scope];
-  // Initialize the container, it may provide shared modules and may need ours
-  // eslint-disable-next-line no-undef
-  await container.init(__webpack_share_scopes__.default);
-}
+// custom list of disabled plugins
+const disabled = [
+    {{#each disabledExtensions}}
+      "{{this}}",
+    {{/each}}
+    ];
 
 async function createModule(scope, module) {
-  try {
-    const factory = await window._JUPYTERLAB[scope].get(module);
-    const instance = factory();
-    instance.__scope__ = scope;
-    return instance;
-  } catch (e) {
-    console.warn(
-      `Failed to create module: package: ${scope}; module: ${module}`
-    );
-    throw e;
+    try {
+        const factory = await window._JUPYTERLAB[scope].get(module);
+        const instance = factory();
+        instance.__scope__ = scope;
+        return instance;
+    } catch (e) {
+        console.warn(
+        `Failed to create module: package: ${scope}; module: ${module}`
+        );
+        throw e;
+    }
   }
-}
+
 
 /**
  * The main function
  */
-async function main() {
-  const mimeExtensionsMods = [
-  {{#each notebook_mime_extensions}}
-    require('{{ @key }}'),
-  {{/each}}
-  ];
-  const mimeExtensions = await Promise.all(mimeExtensionsMods);
+export async function main() {
 
-  // Load the base plugins available on all pages
-  let baseMods = [
-  {{#each notebook_plugins}}
-    {{#if (ispage @key '/')}}
-      {{{ list_plugins }}}
-    {{/if}}
-  {{/each}}
-  ];
+  const pluginsToRegister = [];
 
-  const page = `/${PageConfig.getOption('notebookPage')}`;
-  switch (page) {
-  {{#each notebook_plugins}}
-    {{#unless (ispage @key '/')}}
-    // list all the other plugins grouped by page
-    case '{{ @key }}': {
-      baseMods = baseMods.concat([
-        {{{ list_plugins }}}
-      ]);
-      break;
+  const federatedExtensionPromises = [];
+  const federatedMimeExtensionPromises = [];
+  const federatedStylePromises = [];
+
+  // This is all the data needed to load and activate plugins. This should be
+  // gathered by the server and put onto the initial page template.
+  const extensions = JSON.parse(
+      PageConfig.getOption('federated_extensions')
+      );
+
+  const federatedExtensionNames = new Set();
+
+  extensions.forEach(data => {
+    if (data.extension) {
+      federatedExtensionNames.add(data.name);
+      federatedExtensionPromises.push(createModule(data.name, data.extension));
     }
-    {{/unless}}
-  {{/each}}
-  }
-
-  // populate the list of disabled extensions
-  const disabled = [];
-  const availablePlugins = [];
+    if (data.mimeExtension) {
+      federatedExtensionNames.add(data.name);
+      federatedMimeExtensionPromises.push(createModule(data.name, data.mimeExtension));
+    }
+    if (data.style) {
+      federatedStylePromises.push(createModule(data.name, data.style));
+    }
+  });
 
   /**
    * Iterate over active plugins in an extension.
@@ -100,100 +81,66 @@ async function main() {
     }
 
     let plugins = Array.isArray(exports) ? exports : [exports];
+
     for (let plugin of plugins) {
-      const isDisabled = PageConfig.Extension.isDisabled(plugin.id);
-      availablePlugins.push({
-        id: plugin.id,
-        description: plugin.description,
-        requires: plugin.requires ?? [],
-        optional: plugin.optional ?? [],
-        provides: plugin.provides ?? null,
-        autoStart: plugin.autoStart,
-        enabled: !isDisabled,
-        extension: extension.__scope__
-      });
-      if (isDisabled) {
-        disabled.push(plugin.id);
-        continue;
-      }
+        if (
+          PageConfig.Extension.isDisabled(plugin.id) ||
+          disabled.includes(plugin.id) ||
+          disabled.includes(plugin.id.split(':')[0])
+        ) {
+          continue;
+        }
       yield plugin;
     }
   }
 
-  const extension_data = JSON.parse(
-    PageConfig.getOption('federated_extensions')
-  );
-
-  const mods = [];
-  const federatedExtensionPromises = [];
-  const federatedMimeExtensionPromises = [];
-  const federatedStylePromises = [];
-
-  const extensions = await Promise.allSettled(
-    extension_data.map(async data => {
-      await loadComponent(
-        `${URLExt.join(
-          PageConfig.getOption('fullLabextensionsUrl'),
-          data.name,
-          data.load
-        )}`,
-        data.name
-      );
-      return data;
-    })
-  );
-
-  extensions.forEach(p => {
-    if (p.status === 'rejected') {
-      // There was an error loading the component
-      console.error(p.reason);
-      return;
+  // Handle the mime extensions.
+  const mimeExtensions = [];
+  {{#each mimeExtensions}}
+  if (!federatedExtensionNames.has('{{@key}}')) {
+    try {
+      let ext = require('{{@key}}{{#if this}}/{{this}}{{/if}}');
+      for (let plugin of activePlugins(ext)) {
+        mimeExtensions.push(plugin);
+      }
+    } catch (e) {
+      console.error(e);
     }
+  }
+  {{/each}}
 
-    const data = p.value;
-    if (data.extension) {
-      federatedExtensionPromises.push(createModule(data.name, data.extension));
-    }
-    if (data.mimeExtension) {
-      federatedMimeExtensionPromises.push(
-        createModule(data.name, data.mimeExtension)
-      );
-    }
-    if (data.style && !PageConfig.Extension.isDisabled(data.name)) {
-      federatedStylePromises.push(createModule(data.name, data.style));
-    }
-  });
-
-  // Add the base frontend extensions
-  const baseFrontendMods = await Promise.all(baseMods);
-  baseFrontendMods.forEach(p => {
-    for (let plugin of activePlugins(p)) {
-      mods.push(plugin);
-    }
-  });
-
-  // Add the federated extensions.
-  const federatedExtensions = await Promise.allSettled(
-    federatedExtensionPromises
-  );
-  federatedExtensions.forEach(p => {
-    if (p.status === 'fulfilled') {
+  // Add the federated mime extensions.
+  const federatedMimeExtensions = await Promise.allSettled(federatedMimeExtensionPromises);
+  federatedMimeExtensions.forEach(p => {
+    if (p.status === "fulfilled") {
       for (let plugin of activePlugins(p.value)) {
-        mods.push(plugin);
+        mimeExtensions.push(plugin);
       }
     } else {
       console.error(p.reason);
     }
   });
 
-  // Add the federated mime extensions.
-  const federatedMimeExtensions = await Promise.allSettled(
-    federatedMimeExtensionPromises
-  );
-  federatedMimeExtensions.forEach(p => {
-    if (p.status === 'fulfilled') {
+  // Handle the standard extensions.
+  {{#each extensions}}
+  if (!federatedExtensionNames.has('{{@key}}')) {
+    try {
+      let ext = require('{{@key}}{{#if this}}/{{this}}{{/if}}');
+      for (let plugin of activePlugins(ext)) {
+        pluginsToRegister.push(plugin);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  {{/each}}
+
+  // Add the federated extensions.
+  const federatedExtensions = await Promise.allSettled(federatedExtensionPromises);
+  federatedExtensions.forEach(p => {
+    if (p.status === "fulfilled") {
       for (let plugin of activePlugins(p.value)) {
-        mimeExtensions.push(plugin);
+        pluginsToRegister.push(plugin);
       }
     } else {
       console.error(p.reason);
@@ -211,12 +158,14 @@ async function main() {
   // its built-in plugins even if they are not loaded on the current page.
   // For example this is useful so the Settings Editor can list the debugger
   // plugin even if the debugger is only loaded on the notebook page.
-  PageConfig.setOption('allPlugins', '{{{ json notebook_plugins }}}');
+//   PageConfig.setOption('allPlugins', '{{{ json notebook_plugins }}}');
 
   const NotebookApp = require('@jupyter-notebook/application').NotebookApp;
-  const app = new NotebookApp({ mimeExtensions, availablePlugins });
+  // ! which arguments go here?
+  const app = new NotebookApp({ mimeExtensions, pluginsToRegister });
+  app.name = PageConfig.getOption('appName') || 'JupyterLite';
 
-  app.registerPluginModules(mods);
+  app.registerPluginModules(pluginsToRegister);
 
   // Expose global app instance when in dev mode or when toggled explicitly.
   const exposeAppInBrowser =
@@ -227,6 +176,5 @@ async function main() {
   }
 
   await app.start();
+  await app.restored;
 }
-
-window.addEventListener('load', main);
